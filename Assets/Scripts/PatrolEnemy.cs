@@ -8,7 +8,7 @@ public class PatrolEnemy : MonoBehaviour
     public float moveSpeed = 3.0f;
     public float arrivalRadius = 0.5f;
     public float damageAmount = 10.0f;
-    public float pushForce = 5.0f;
+    public float pushForce = 10.0f;
 
     private int currentWaypointIndex = 0;
     private bool movingForward = true;
@@ -56,6 +56,7 @@ public class PatrolEnemy : MonoBehaviour
             {
                 Vector3 pushDirection = (collision.transform.position - transform.position).normalized;
                 collision.rigidbody.AddForce(pushDirection * pushForce, ForceMode.Impulse);
+                playerHealth.curHealth -= 10f;
             }
         }
         else if (collision.gameObject.CompareTag("Enemy"))

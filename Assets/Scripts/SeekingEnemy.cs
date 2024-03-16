@@ -24,6 +24,8 @@ public class SeekingEnemy : MonoBehaviour
     private Vector3 targetPosition;
     private float attackCooldownTimer;
 
+    [SerializeField] private PlayerMovement player;
+
     private void Start()
     {
         currentState = EnemyState.Idle;
@@ -46,10 +48,13 @@ public class SeekingEnemy : MonoBehaviour
                 break;
         }
 
-        if (currentState != EnemyState.AttackCooldown &&
-            Physics2D.Raycast(transform.position, Vector2.down, 0.5f, playerLayer))
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.up, out hit, 1f, playerLayer))
         {
-            Destroy(gameObject);
+            if (hit.collider.CompareTag("Player"))
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -97,7 +102,7 @@ public class SeekingEnemy : MonoBehaviour
 
     private void AttackPlayer()
     {
-        Debug.Log("Player attacked for " + attackDamage + " damage.");
+        player.curHealth -= 10f;
     }
 
     private Vector3 GetRandomPoint(Vector3 center, float radius)
